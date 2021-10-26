@@ -1,8 +1,8 @@
 import moment from 'moment';
 import React from 'react';
-import { mockComponent } from 'react-dom/test-utils';
+
 import {v4 as uuidv4 } from 'uuid';
-import Chirp from "./components/Chirp";
+
 
 
 class App extends React.Component {
@@ -12,18 +12,16 @@ class App extends React.Component {
             key: uuidv4(),
             timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
             username: '',
-            message: '',
+            chirp: '',
             chirps: [],
-        };
-
+            };
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        this.setState({ username: '', message: '',
-        chirps: [...this.state.message, {id:uuidv4(), username: this.state.username}]
-    })
-
+        this.setState({ username: '', chirp: ''},
+        this.setState({chirps: [...this.state.chirps], id: uuidv4(), username: this.state.username, chirp: this.state.chirp})
+        )   
     }
     render() {
         return (
@@ -40,25 +38,34 @@ class App extends React.Component {
                     />
                     <label>Chirp:</label>
                     <input  
-                        value={this.state.message}
-                        onChange={e => this.setState({ message: e.target.value})}
+                        value={this.state.chirp}
+                        onChange={e => this.setState({ chirp: e.target.value})}
                         className="form-control"
                         />
                     <button onClick={e => this.handleSubmit(e)} className="btn btn-primary">Add Chirp</button>
                 </form>
+                {
+                    this.state.chirps.map((chirp) => <div> 
+                        <li>{chirp.username}</li>
+                        <li>{chirp.chirp}</li>
+                        <li>moments().timestamp</li>
+                        </div> 
+                        ) 
+                       
+                }
                 </div>
-                <ul className="list-group">
-                    {this.state.chirps.map(chirp => (
-                        <li className="list-group-item" key={'chirp-username-${chirp.id}'}>{chirp.username}</li>
+        </section>
+        
+     </main>        
+          );
 
-                    ))}
-                </ul>
-                
-                </section>
-            </main>
-        );
-     }
-}         
+
+    }
+       
+    }
+    
+
+
 
            
     
