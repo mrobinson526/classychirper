@@ -1,64 +1,65 @@
+import moment from 'moment';
 import React from 'react';
+import { mockComponent } from 'react-dom/test-utils';
+import {v4 as uuidv4 } from 'uuid';
+import Chirp from "./components/Chirp";
 
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            key: uuidv4(),
+            timestamp: moment().format('MMMM Do YYYY, h:mm:ss a'),
+            username: '',
+            message: '',
+            chirps: [],
+        };
+
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.setState({ username: '', message: '',
+        chirps: [...this.state.message, {id:uuidv4(), username: this.state.username}]
+    })
+
+    }
     render() {
         return (
-            <div>
-                <h1>Hello from App Class Component</h1>
-            </div>
+            <main className = "container">
+                <section className="row justify-content-center mt-5">
+                <div className="col-md-7">
+                    <h1>Classy Chirper Project</h1>
+                <form className="form-group">
+                    <label>User Name:</label>
+                    <input  
+                        value={this.state.username}
+                        onChange={e => this.setState({ username: e.target.value})}
+                        className="form-control"
+                    />
+                    <label>Chirp:</label>
+                    <input  
+                        value={this.state.message}
+                        onChange={e => this.setState({ message: e.target.value})}
+                        className="form-control"
+                        />
+                    <button onClick={e => this.handleSubmit(e)} className="btn btn-primary">Add Chirp</button>
+                </form>
+                </div>
+                <ul className="list-group">
+                    {this.state.chirps.map(chirp => (
+                        <li className="list-group-item" key={'chirp-username-${chirp.id}'}>{chirp.username}</li>
+
+                    ))}
+                </ul>
+                
+                </section>
+            </main>
         );
-    }
+     }
+}         
 
-}
-  /*  const [username, setUsername] = useState("");
-    const [usermsg, setUsermsg] = useState("");
-    const [list, setList] = useState([]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-    const data ={username, usermsg}
-        if (username && usermsg) {
-            setList((ls) => [...ls, data])
-            setUsername(" ")
-            setUsermsg(" ")
-        } else {
-            if (username || usermsg == null){
-                e.preventDefault();
-                alert("You must enter a username and message");
-            }
-            
-        }
-    }
-
-    return (
-       <div className = "App">
-           <h1>Chirp Your Favorite Quote</h1>
-           <Chirper username={"mrobinson526"} usermsg={'The most wonderful time of the year'} />
-           <Chirper username={"mrobinson526"} usermsg={'Christmas is my favorite holiday!'} />
-           <Chirper username={"mrobinson526"} usermsg={'Mistakes are evidence of being in the game of life'} />
            
-           
-           <form onSubmit = {handleSubmit}>
-               <input type="text"  placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-               <input type="text"  placeholder="usermsg" value={usermsg} onChange={(e) => setUsermsg(e.target.value)} />
-               <button>Chirp It!</button>
-           </form>
-           {
-            list.map((a) => <div>
-            <li>{a.username}</li>
-            <li>{a.usermsg}</li>
-            <DateTime />
-        
-            </div>
-    )
-           }
-           
-            
-       </div>
-    
-    )
-    
-    } */
     
 export default App;
